@@ -1,4 +1,4 @@
-#ifndef FoamFftwDirver_H
+#ifndef FoamFftwDriver_H
 #define FoamFftwDriver_H
 
 #include "List.H"

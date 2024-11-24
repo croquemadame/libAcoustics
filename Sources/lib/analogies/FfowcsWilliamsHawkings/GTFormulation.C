@@ -181,7 +181,7 @@ void Foam::functionObjects::GTFormulation::calculateAcousticPressure
     } //For Sf
 }
 
-Foam::scalar Foam::functionObjects::GTFormulation::observerAcousticPressure
+Foam::Pair<Foam::scalar> Foam::functionObjects::GTFormulation::observerAcousticPressure
 (
     const vectorField& Sf,
     const vectorField& uS,
@@ -217,7 +217,11 @@ Foam::scalar Foam::functionObjects::GTFormulation::observerAcousticPressure
 
     scalar coeff1 = 1. / 4. / Foam::constant::mathematical::pi;
 
-    return (intDotQdS_.value(iObs) + intFdS_.value(iObs))*coeff1;
+    Pair<scalar> apressureComp (intDotQdS_.value(iObs)*coeff1, intFdS_.value(iObs)*coeff1);
+
+    return apressureComp;
+
+    //return (intDotQdS_.value(iObs) + intFdS_.value(iObs))*coeff1;
 }
 
 void Foam::functionObjects::GTFormulation::update()

@@ -149,7 +149,7 @@ Foam::functionObjects::fwhFormulation::~fwhFormulation()
 {
 }
 
-Foam::scalar Foam::functionObjects::fwhFormulation::observerAcousticPressure
+Foam::Pair<Foam::scalar> Foam::functionObjects::fwhFormulation::observerAcousticPressure
 (
     const vectorField& Sf,
     const vectorField& uS,
@@ -160,7 +160,7 @@ Foam::scalar Foam::functionObjects::fwhFormulation::observerAcousticPressure
     scalar ct
 )
 {
-    return 0.0;
+    return Pair<scalar>(0.0,0.0);
 }
 
 void Foam::functionObjects::fwhFormulation::clearExpiredData()

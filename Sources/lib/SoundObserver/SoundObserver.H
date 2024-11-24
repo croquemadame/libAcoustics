@@ -64,6 +64,8 @@ class SoundObserver
     
     //-
     scalar apressure_;
+
+    Pair<scalar> apressureComp_;
     
     //-
     List<scalar> p_;
@@ -90,7 +92,7 @@ public:
     //-
     const SoundObserver &operator = (const SoundObserver&);
     
-    /// Access
+    /// Access  
     
     //-
     const word& name() const;
@@ -100,7 +102,13 @@ public:
     
     //-
     const scalar& apressure() const;
-    
+
+    //-
+    const scalar& apressureQ() const;
+
+    //-
+    const scalar& apressureF() const;
+
     //-
     void name(word name);
     
@@ -109,7 +117,13 @@ public:
     
     //-
     void apressure(scalar apressure);
-    
+
+    //-
+    void apressureQ(scalar apressure);
+
+    //-
+    void apressureF(scalar apressure);
+
     //-
     autoPtr<List<List<scalar> > > fft (scalar tau) const;
 };

@@ -108,7 +108,7 @@ void Foam::functionObjects::AcousticAnalogy::makeFile()
         analogyOutPtr_() << "Time" << " ";
         forAll(observers_, iObserver)
         {
-            analogyOutPtr_() << observers_[iObserver].name() << "_pFluct ";
+            analogyOutPtr_() << observers_[iObserver].name() << "_pFluct " << "Qfluct " << "Ffluct ";
         }
         analogyOutPtr_() << endl;
     }
@@ -277,7 +277,7 @@ bool Foam::functionObjects::AcousticAnalogy::write()
         forAll(observers_, iObserver)
         {
             const SoundObserver& obs = observers_[iObserver];
-            analogyOutPtr_() << obs.apressure() << " ";
+            analogyOutPtr_() << obs.apressure() << " " << obs.apressureQ() << " " << obs.apressureF() << " ";
         }
 
         analogyOutPtr_() << endl;

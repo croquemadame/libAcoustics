@@ -22,6 +22,8 @@ private:
 
     typedef Pair<DynamicList<scalar> > pointTimeData;
 
+    typedef Pair<scalar>  pressureComponents;
+
     typedef List<List<List<pointTimeData > > > surfaceTimeData;
 
     template<typename T>
@@ -61,7 +63,7 @@ public:
     ~Farassat1AFormulation();
 
     //-
-    scalar observerAcousticPressure (const vectorField& Sf, const vectorField& uS, const scalarField& rhoS, const scalarField& pS, label iObs, label iSurf, scalar ct);
+    Pair<scalar> observerAcousticPressure (const vectorField& Sf, const vectorField& uS, const scalarField& rhoS, const scalarField& pS, label iObs, label iSurf, scalar ct);
     
     //-
     inline void calculateAcousticPressure (const vectorField& Sf, const vectorField& uS, const scalarField& rhoS, const scalarField& pS, label iObs, label iSurf, scalar ct);

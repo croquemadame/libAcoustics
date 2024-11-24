@@ -82,7 +82,7 @@ void Foam::functionObjects::Farassat1AFormulation::initialize()
     }
 }
 
-Foam::scalar Foam::functionObjects::Farassat1AFormulation::observerAcousticPressure
+Foam::Pair<Foam::scalar> Foam::functionObjects::Farassat1AFormulation::observerAcousticPressure
 (
     const vectorField& Sf,
     const vectorField& uS,
@@ -162,8 +162,11 @@ Foam::scalar Foam::functionObjects::Farassat1AFormulation::observerAcousticPress
     reduce (intFdS_.value(iObs), sumOp<scalar>());
 
     scalar coeff1 = 1. / 4. / Foam::constant::mathematical::pi;
+
+    Pair<scalar> apressureComp(intDotQdS_.value(iObs)*coeff1, intFdS_.value(iObs)*coeff1);
     
-    return (intDotQdS_.value(iObs) + intFdS_.value(iObs))*coeff1;
+    return apressureComp;
+    //return (intDotQdS_.value(iObs) + intFdS_.value(iObs))*coeff1;
 }
 
 void Foam::functionObjects::Farassat1AFormulation::calculateAcousticPressure

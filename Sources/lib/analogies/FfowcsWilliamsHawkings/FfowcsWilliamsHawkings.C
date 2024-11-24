@@ -350,12 +350,16 @@ void Foam::functionObjects::FfowcsWilliamsHawkings::correct()
                 const scalarField rhoS (surfaceDensity(surf)());
                 const scalarField pS (surfacePressure(surf)() - pInf_);
 
-                scalar oap = fwhFormulationPtr_->observerAcousticPressure(Sf, uS, rhoS, pS, iObs, iSurf, ct);
+                Pair<scalar> oap = fwhFormulationPtr_->observerAcousticPressure(Sf, uS, rhoS, pS, iObs, iSurf, ct);
+
+//                scalar oap = fwhFormulationPtr_->observerAcousticPressure(Sf, uS, rhoS, pS, iObs, iSurf, ct);
 
                 if (Pstream::master())
                 {
                     SoundObserver& obs = observers_[iObs];
-                    obs.apressure(oap); //appends new calculated acoustic pressure
+                    obs.apressure(oap.first()+oap.second()); //appends new calculated acoustic pressure
+                    obs.apressureQ(oap.first()); 
+                    obs.apressureF(oap.second()); //appends new calculated acoustic pressure
                     Log<<"OAP = "<< oap <<nl;
                 }
             }
@@ -369,6 +373,8 @@ void Foam::functionObjects::FfowcsWilliamsHawkings::correct()
             {
                 SoundObserver& obs = observers_[iObs];
                 obs.apressure(0.0);
+                obs.apressureQ(0.0);
+                obs.apressureF(0.0);
             }
         }
     }
@@ -408,7 +414,7 @@ Foam::tmp<Foam::vectorField> Foam::functionObjects::FfowcsWilliamsHawkings::surf
     volScalarField p (obr_.lookupObject<volScalarField>("p"));
     volVectorField U (obr_.lookupObject<volVectorField>("U"));
 
-    volVectorField gradp = fvc::grad(p);
+    volVectorField gradp(fvc::grad(p));
 
     //Interpolate FWH surface velocity to CFD mesh
 
@@ -457,8 +463,8 @@ Foam::tmp<Foam::vectorField> Foam::functionObjects::FfowcsWilliamsHawkings::surf
         }
     }
 
-    volTensorField momConv = this->rho()()*U*(U-Ufwh);
-    volVectorField divMomConv = fvc::div(momConv);
+    volTensorField momConv(this->rho()()*U*(U-Ufwh));
+    volVectorField divMomConv(fvc::div(momConv));
 
     divTSampled = sampleOrInterpolate<vector>(gradp,surface);
     if (p.dimensions() != dimPressure)

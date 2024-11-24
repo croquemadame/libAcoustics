@@ -32,6 +32,7 @@ Foam::SoundObserver::SoundObserver()
     position_(vector::zero),
     pref_(1.0e-5),
     apressure_(0.0),
+    apressureComp_(0.0,0.0),
     p_(0),
     fftFreq_(1024)
 {
@@ -43,6 +44,7 @@ Foam::SoundObserver::SoundObserver(word name, vector pos, scalar pref, label fft
     position_(pos),
     pref_(pref),
     apressure_(0.0),
+    apressureComp_(0.0,0.0),
     p_(0),
     fftFreq_(fftFreq)
 {
@@ -55,6 +57,7 @@ Foam::SoundObserver::SoundObserver(const SoundObserver& so)
     position_(so.position_),
     pref_(so.pref_),
     apressure_(so.apressure_),
+    apressureComp_(so.apressureComp_),
     p_(so.p_),
     fftFreq_(so.fftFreq_)
 {
@@ -66,6 +69,7 @@ Foam::SoundObserver::SoundObserver(SoundObserver&& so)
     position_(so.position_),
     pref_(so.pref_),
     apressure_(so.apressure_),
+    apressureComp_(so.apressureComp_),
     p_(so.p_),
     fftFreq_(so.fftFreq_)
 {
@@ -77,6 +81,7 @@ const Foam::SoundObserver &Foam::SoundObserver::operator = (const SoundObserver&
     position_ = so.position_;
     pref_ = so.pref_;
     apressure_ = so.apressure_;
+    apressureComp_ = so.apressureComp_;
     p_ = so.p_;
     fftFreq_ = so.fftFreq_;
     return *this;
@@ -97,6 +102,16 @@ const Foam::scalar& Foam::SoundObserver::apressure() const
     return apressure_;
 }
 
+const Foam::scalar& Foam::SoundObserver::apressureQ() const
+{
+    return apressureComp_.first();
+}
+
+const Foam::scalar& Foam::SoundObserver::apressureF() const
+{
+    return apressureComp_.second();
+}
+
 void Foam::SoundObserver::name(word name)
 {
     name_ = name;
@@ -111,6 +126,16 @@ void Foam::SoundObserver::apressure(scalar apressure)
 {
     apressure_ = apressure;
     p_.append(apressure);
+}
+
+void Foam::SoundObserver::apressureQ(scalar apressure)
+{
+    apressureComp_.first() = apressure;
+}
+
+void Foam::SoundObserver::apressureF(scalar apressure)
+{
+    apressureComp_.second() = apressure;
 }
 
 Foam::autoPtr<Foam::List<Foam::List<Foam::scalar> > > Foam::SoundObserver::fft(scalar tau) const

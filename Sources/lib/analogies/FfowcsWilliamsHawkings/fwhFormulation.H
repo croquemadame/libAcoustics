@@ -109,7 +109,7 @@ public:
     surfaceTimeData getFdsData();
     
     //-
-    virtual  scalar observerAcousticPressure (const vectorField& Sf, const vectorField& uS, const scalarField& rhoS, const scalarField& pS, label iObs, label iSurf, scalar ct);
+    virtual  Pair<scalar> observerAcousticPressure (const vectorField& Sf, const vectorField& uS, const scalarField& rhoS, const scalarField& pS, label iObs, label iSurf, scalar ct);
     
     //-
     virtual void update();
